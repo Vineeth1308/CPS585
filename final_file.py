@@ -4,13 +4,17 @@ from io import BytesIO
 from google.cloud import storage
 from google.cloud import bigquery
 
+
+
+# This is the trigger function and netry point for our project pipeline, It triggers/occurs when the object is created, or an existing object is overwritten in our bucket.
+
 def hello_gcs(event, context):
     
     lst=[]
     file_name = event['name']
     bucket = event['bucket']
     
-    # Create a client object
+    # Creating a client object
     client = bigquery.Client()
     storage_client = storage.Client()
     
@@ -24,7 +28,7 @@ def hello_gcs(event, context):
             dsexists = True
             break
 
-    # If the dataset does not exist, create it
+    # If the dataset does not exist, create a new dataset
     if not dsexists:
         dataset = bigquery.Dataset(client.dataset(dataset_id))
         dataset.location = 'US'
